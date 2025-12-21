@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import Image from "next/image";
 import Header from "@/components/Stage/Header";
 import HeroBackground from "@/components/Stage/HeroBackground";
