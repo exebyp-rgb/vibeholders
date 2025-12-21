@@ -2,6 +2,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 interface Props {
     params: Promise<{ vibe: string }>;
 }
@@ -72,3 +74,4 @@ export default async function VibePage({ params }: Props) {
         </main>
     );
 }
+
