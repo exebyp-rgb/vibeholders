@@ -1,2 +1,2 @@
 name = "vibeholders"
-pages_build_output_dir = "."
+pages_build_output_dir = ".vercel/output/static"
