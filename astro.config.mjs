@@ -4,6 +4,6 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   site: 'https://vibeholders.com',
-  integrations: [tailwind()[tailwind()],
+  integrations: [tailwind()],
   output: 'static',
 });
