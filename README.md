@@ -2,6 +2,72 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+# VibeHolders
+
+Интерактивная социальная платформа-карта для креаторов с 12 уникальными архетипами.
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **Database**: Supabase (Postgres)
+- **Deployment**: Cloudflare Pages
+
+## Supabase Setup
+
+### 1. Create Supabase Project
+
+1. Go to [app.supabase.com](https://app.supabase.com)
+2. Create a new project
+3. Wait for database to be ready
+
+### 2. Create Database Schema
+
+Run this SQL in Supabase SQL Editor:
+
+```sql
+CREATE TABLE creators (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  username TEXT UNIQUE NOT NULL,
+  archetype TEXT NOT NULL,
+  vibe_tags TEXT[] DEFAULT '{}',
+  avatar_url TEXT,
+  photo_url TEXT,
+  position_x FLOAT CHECK (position_x >= 0 AND position_x <= 100),
+  position_y FLOAT CHECK (position_y >= 0 AND position_y <= 100),
+  last_active TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  cta_text TEXT,
+  cta_link TEXT,
+  bio TEXT,
+  instagram TEXT,
+  twitter TEXT,
+  youtube TEXT,
+  tiktok TEXT,
+  website TEXT,
+  followers INT DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create storage bucket for avatars and photos
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('creators', 'creators', true);
+```
+
+### 3. Get API Keys
+
+1. Go to Project Settings > API
+2. Copy `Project URL` and `anon public` key
+3. Create `.env.local` file:
+
+```bash
+cp .env.example .env.local
+```
+
+4. Add your keys to `.env.local`
+
+
+
 First, run the development server:
 
 ```bash
