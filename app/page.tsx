@@ -15,8 +15,8 @@ export default function Home() {
     useEffect(() => {
           async function loadCreators() {
                   try {
-                                    const { createClient } = await import('@/lib/supabase');
-                                                const supabase = createClient();
+                                    const { getSupabaseClient } = await import('@/lib/supabase');
+                                                const supabase = getSupabaseClient();
                             
                             const { data, error } = await supabase
                               .from('creators')
