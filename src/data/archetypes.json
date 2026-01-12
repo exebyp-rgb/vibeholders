@@ -1,0 +1,14 @@
+[
+  {"id": "visionary", "emoji": "🔮", "color": "#FF6B9D"},
+  {"id": "connector", "emoji": "🤝", "color": "#FFA07A"},
+  {"id": "creator", "emoji": "✨", "color": "#FFD700"},
+  {"id": "explorer", "emoji": "🧭", "color": "#98FB98"},
+  {"id": "healer", "emoji": "💚", "color": "#87CEEB"},
+  {"id": "teacher", "emoji": "📚", "color": "#DDA0DD"},
+  {"id": "activist", "emoji": "✊", "color": "#FF6347"},
+  {"id": "catalyst", "emoji": "⚡", "color": "#FF1493"},
+  {"id": "innovator", "emoji": "💡", "color": "#00CED1"},
+  {"id": "guardian", "emoji": "🛡️", "color": "#9370DB"},
+  {"id": "philosopher", "emoji": "🤔", "color": "#4682B4"},
+  {"id": "wanderer", "emoji": "🌍", "color": "#32CD32"}
+]
