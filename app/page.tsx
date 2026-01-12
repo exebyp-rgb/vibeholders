@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Menu } from '@/components/Menu';
 import { ARCHETYPE_LIST } from '@/lib/constants/archetypes';
