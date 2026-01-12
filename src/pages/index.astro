@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import cities from '../data/cities.json';
+---
+
+<BaseLayout title="Vibeholders - Discover Your City">
+  <main class="container mx-auto px-4 py-16">
+    <h1 class="text-5xl font-bold text-center mb-8 bg-gradient-to-r from-vibeh-purple to-vibeh-pink bg-clip-text text-transparent">
+      vibeholders
+    </h1>
+    <p class="text-center text-xl mb-12 text-gray-300">
+      Discover vibrant events and creators in your city
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {cities.map((city) => (
+        <a href={`/city/${city.id}/`} class="block p-6 bg-white/5 rounded-lg hover:bg-white/10 transition">
+          <h2 class="text-2xl font-bold mb-2">{city.name}</h2>
+          <p class="text-gray-400">{city.country}</p>
+        </a>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
