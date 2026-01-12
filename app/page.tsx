@@ -1,66 +1,58 @@
-"use client";
+'use client';
 
-
-import Image from "next/image";
-import Header from "@/components/Stage/Header";
-import HeroBackground from "@/components/Stage/HeroBackground";
-import CreatorIcon from "@/components/Stage/CreatorIcon";
-import CreatorCard from "@/components/CreatorCard/CreatorCard";
-import NavMenu from "@/components/Nav/NavMenu";
-import { useState } from "react";
-
-// Mock data for initial visualization
-const MOCK_CREATORS = [
-  { id: '1', name: 'Neon Rider', vibeColor: '#05d9e8', position: { top: '30%', left: '20%' } },
-  { id: '2', name: 'Cyber Zen', vibeColor: '#ff2a6d', position: { top: '50%', left: '50%' } },
-  { id: '3', name: 'Night Owl', vibeColor: '#d23bff', position: { top: '65%', left: '80%' } },
-  { id: '4', name: 'Urban Explorer', vibeColor: '#00ff9f', position: { top: '25%', left: '70%' } },
-];
+import { useState } from 'react';
+import { Header } from '@/components/Header';
+import { Menu } from '@/components/Menu';
+import { ARCHETYPE_LIST } from '@/lib/constants/archetypes';
 
 export default function Home() {
-  const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
-
-  const handleCreatorClick = (id: string) => {
-    setSelectedCreatorId(id);
-  };
-
-  const selectedCreator = MOCK_CREATORS.find(c => c.id === selectedCreatorId);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <main className="relative w-full h-screen overflow-hidden bg-black">
-      <HeroBackground city="Neo Tokyo" />
-      <Header />
-
-      {/* Stage Area */}
-      <div className="absolute inset-0 w-full h-full z-[var(--z-scene)]">
-        {MOCK_CREATORS.map((creator) => (
-          <CreatorIcon
-            key={creator.id}
-            name={creator.name}
-            vibeColor={creator.vibeColor}
-            position={creator.position}
-            onClick={() => handleCreatorClick(creator.id)}
-          />
-        ))}
+    <main className="relative w-full h-screen overflow-hidden bg-[#0a0512]">
+      {/* Background */}
+      <div className="absolute inset-0 bg-black opacity-80" />
+      
+      {/* Header */}
+      <Header onMenuClick={() => setIsMenuOpen(true)} />
+      
+      {/* Menu */}
+      <Menu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      
+      {/* Content Area */}
+      <div className="relative z-10 flex items-center justify-center h-full">
+        <div className="text-center">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+            Welcome to VibeHolders
+          </h2>
+          <p className="text-xl text-white/80 mb-12">
+            Discover creators through 12 unique archetypes
+          </p>
+          
+          {/* Archetype Grid */}
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-4 max-w-4xl mx-auto px-4">
+            {ARCHETYPE_LIST.map((archetype) => (
+              <div
+                key={archetype.id}
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                style={{ borderColor: `${archetype.color}20` }}
+              >
+                <span className="text-4xl">{archetype.emoji}</span>
+                <span className="text-sm text-white/90 font-medium">
+                  {archetype.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-
-      {/* Navigation */}
-      <NavMenu />
-
-      {/* Creator Card Overlay */}
-      {selectedCreator && (
-        <CreatorCard
-          creator={{
-            ...selectedCreator,
-            tags: ['Cyberpunk', 'Neon', 'NightLife'], // Mock tags
-            outUrl: '/out/neon-rider', // Mock url
-            videoUrl: undefined // Will use fallback
-          }}
-          onClose={() => setSelectedCreatorId(null)}
-        />
-      )}
-
-      {/* TODO: Navigation */}
+      
+      {/* Footer */}
+      <div className="absolute bottom-8 left-0 right-0 text-center">
+        <p className="text-white/60 text-sm uppercase tracking-wider">
+          VibeHolders © 2024
+        </p>
+      </div>
     </main>
   );
 }
