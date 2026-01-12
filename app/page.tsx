@@ -1,12 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useState } from 'react, useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Menu } from '@/components/Menu';
 import { ARCHETYPE_LIST } from '@/lib/constants/archetypes';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    // Load creators from Supabase
+    const [creators, setCreators] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+          async function loadCreators() {
+                  try {
+                            const { createClient } = await import('@/lib/supabase');
+                            const supabase = createClient();
+                            const { data, error } = await supabase
+                              .from('creators')
+                              .select('*');
+
+                            if (data) {
+                                        console.log('Loaded creators:', data);
+                                        setCreators(data);
+                                      }
+                            if (error) console.error('Error loading creators:', error);
+                          } catch (err) {
+                            console.error('Error:', err);
+                          } finally {
+                            setLoading(false);
+                          }
+                }
+          loadCreators();
+        }, []);
 
   return (
     <main className="relative w-full h-screen overflow-hidden bg-[#0a0512]">
