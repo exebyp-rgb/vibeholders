@@ -1,10 +1,12 @@
 [
-  {"id": "kyiv", "name": "Kyiv", "country": "Ukraine"},
-  {"id": "lviv", "name": "Lviv", "country": "Ukraine"},
-  {"id": "odesa", "name": "Odesa", "country": "Ukraine"},
-  {"id": "berlin", "name": "Berlin", "country": "Germany"},
-  {"id": "warsaw", "name": "Warsaw", "country": "Poland"},
-  {"id": "riga", "name": "Riga", "country": "Latvia"},
-  {"id": "vilnius", "name": "Vilnius", "country": "Lithuania"},
-  {"id": "tallinn", "name": "Tallinn", "country": "Estonia"}
+  {"id": "nyc", "name": "New York", "country": "USA"},
+  {"id": "la", "name": "Los Angeles", "country": "USA"},
+  {"id": "sf", "name": "San Francisco", "country": "USA"},
+  {"id": "chicago", "name": "Chicago", "country": "USA"},
+  {"id": "miami", "name": "Miami", "country": "USA"},
+  {"id": "austin", "name": "Austin", "country": "USA"},
+  {"id": "portland", "name": "Portland", "country": "USA"},
+  {"id": "seattle", "name": "Seattle", "country": "USA"},
+  {"id": "boston", "name": "Boston", "country": "USA"},
+  {"id": "denver", "name": "Denver", "country": "USA"}
 ]
