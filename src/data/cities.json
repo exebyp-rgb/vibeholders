@@ -1,0 +1,10 @@
+[
+  {"id": "kyiv", "name": "Kyiv", "country": "Ukraine"},
+  {"id": "lviv", "name": "Lviv", "country": "Ukraine"},
+  {"id": "odesa", "name": "Odesa", "country": "Ukraine"},
+  {"id": "berlin", "name": "Berlin", "country": "Germany"},
+  {"id": "warsaw", "name": "Warsaw", "country": "Poland"},
+  {"id": "riga", "name": "Riga", "country": "Latvia"},
+  {"id": "vilnius", "name": "Vilnius", "country": "Lithuania"},
+  {"id": "tallinn", "name": "Tallinn", "country": "Estonia"}
+]
