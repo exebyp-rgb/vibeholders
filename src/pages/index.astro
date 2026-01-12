@@ -1,24 +1,160 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import cities from '../data/cities.json';
+
+// Get user's location from Cloudflare headers  
+const userCity = Astro.request.headers.get('cf-ipcity')?.toLowerCase() || 'new york';
+
+// Map city names to our city IDs
+const cityMap: Record<string, string> = {
+  'new york': 'nyc',
+  'los angeles': 'la',
+  'san francisco': 'sf',
+  'chicago': 'chicago',
+  'miami': 'miami',
+  'austin': 'austin',
+  'portland': 'portland',
+  'seattle': 'seattle',
+  'boston': 'boston',
+  'denver': 'denver'
+};
+
+let detectedCityId = cityMap[userCity] || 'nyc';
+let profiles = [];
+
+// Try to load profiles for detected city
+try {
+  profiles = await import(`../data/profiles/${detectedCityId}.json`).then(m => m.default);
+} catch (e) {
+  // Fallback to NYC if city profiles don't exist
+  detectedCityId = 'nyc';
+  try {
+    profiles = await import('../data/profiles/nyc.json').then(m => m.default);
+  } catch (err) {
+    profiles = [];
+  }
+}
+
+const detectedCity = cities.find(c => c.id === detectedCityId);
 ---
 
-<BaseLayout title="Vibeholders - Discover Your City">
+<BaseLayout title={`Vibeholders - ${detectedCity?.name || 'Discover Your City'}`}>
   <main class="container mx-auto px-4 py-16">
     <h1 class="text-5xl font-bold text-center mb-8 bg-gradient-to-r from-vibeh-purple to-vibeh-pink bg-clip-text text-transparent">
       vibeholders
     </h1>
     <p class="text-center text-xl mb-12 text-gray-300">
-      Discover vibrant events and creators in your city
+      Creators in {detectedCity?.name || 'your city'}
     </p>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {cities.map((city) => (
-        <a href={`/city/${city.id}/`} class="block p-6 bg-white/5 rounded-lg hover:bg-white/10 transition">
-          <h2 class="text-2xl font-bold mb-2">{city.name}</h2>
-          <p class="text-gray-400">{city.country}</p>
-        </a>
-      ))}
-    </div>
+
+    {profiles.length > 0 ? (
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" id="creators-grid">
+        {profiles.map((creator: any) => (
+          <div 
+            class="creator-card cursor-pointer group" 
+            data-creator={JSON.stringify(creator)}
+          >
+            <div class="bg-white/5 rounded-lg p-6 hover:bg-white/10 transition flex flex-col items-center">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-vibeh-purple to-vibeh-pink mb-3 flex items-center justify-center text-2xl">
+                {creator.archetype === 'musician' && '🎵'}
+                {creator.archetype === 'visual-artist' && '🎨'}
+                {creator.archetype === 'dj-producer' && '🎧'}
+                {creator.archetype === 'photographer' && '📸'}
+                {creator.archetype === 'filmmaker' && '🎬'}
+                {creator.archetype === 'dancer' && '💃'}
+                {creator.archetype === 'performer' && '🎭'}
+                {creator.archetype === 'writer' && '✍️'}
+                {creator.archetype === 'designer' && '🖌️'}
+                {creator.archetype === 'culinary-artist' && '🍳'}
+                {creator.archetype === 'fashion-creator' && '👗'}
+                {creator.archetype === 'digital-creator' && '💻'}
+              </div>
+              <h3 class="font-bold mb-1 text-center">{creator.name}</h3>
+              <p class="text-sm text-gray-400 text-center">{creator.bio}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center text-gray-400">
+        <p>No creators found in {detectedCity?.name}.</p>
+        <p class="mt-4">Check out other cities:</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          {cities.map((city) => (
+            <a href={`/city/${city.id}/`} class="block p-6 bg-white/5 rounded-lg hover:bg-white/10 transition">
+              <h2 class="text-2xl font-bold mb-2">{city.name}</h2>
+              <p class="text-gray-400">{city.country}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
   </main>
+
+  <!-- Modal -->
+  <div id="creator-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="bg-gray-900 rounded-xl max-w-md w-full p-8 relative">
+      <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+      <div id="modal-content" class="text-center">
+        <!-- Content will be injected by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal functionality
+    const modal = document.getElementById('creator-modal');
+    const modalContent = document.getElementById('modal-content');
+    const closeBtn = document.getElementById('close-modal');
+    const creatorCards = document.querySelectorAll('.creator-card');
+
+    creatorCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const creatorData = JSON.parse(card.getAttribute('data-creator') || '{}');
+        
+        // Get emoji for archetype
+        const archetypeEmojis: Record<string, string> = {
+          'musician': '🎵',
+          'visual-artist': '🎨',
+          'dj-producer': '🎧',
+          'photographer': '📸',
+          'filmmaker': '🎬',
+          'dancer': '💃',
+          'performer': '🎭',
+          'writer': '✍️',
+          'designer': '🖌️',
+          'culinary-artist': '🍳',
+          'fashion-creator': '👗',
+          'digital-creator': '💻'
+        };
+        
+        modalContent!.innerHTML = `
+          <div class="w-24 h-24 rounded-full bg-gradient-to-br from-vibeh-purple to-vibeh-pink mx-auto mb-4 flex items-center justify-center text-4xl">
+            ${archetypeEmojis[creatorData.archetype] || '🎨'}
+          </div>
+          <h2 class="text-2xl font-bold mb-2">${creatorData.name}</h2>
+          <p class="text-gray-400 mb-4">${creatorData.bio}</p>
+          <div class="flex flex-wrap gap-2 justify-center mb-4">
+            ${creatorData.tags?.map((tag: string) => `<span class="px-3 py-1 bg-white/10 rounded-full text-sm">${tag}</span>`).join('') || ''}
+          </div>
+          <p class="text-vibeh-purple font-semibold capitalize">${creatorData.archetype?.replace('-', ' ')}</p>
+        `;
+        
+        modal!.classList.remove('hidden');
+        modal!.classList.add('flex');
+      });
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      modal!.classList.add('hidden');
+      modal!.classList.remove('flex');
+    });
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+  </script>
 </BaseLayout>
