@@ -1,30 +1,54 @@
+import { ArchetypeType } from './constants/archetypes';
+
+// Database types matching Supabase schema
 export interface Creator {
-    id: string; // TEXT
-    slug: string; // TEXT
-    display_name: string; // TEXT
-    archetype: string; // TEXT
-    city_bucket: string; // TEXT
-    hero_video_path: string; // TEXT
-    poster_path: string; // TEXT
-    tags: string; // JSON string
-    out_url: string; // TEXT
-    owner_type: 'admin' | 'creator'; // TEXT
-    owner_id: string; // TEXT
-    is_active: number; // INTEGER (0 | 1)
-    priority: number; // INTEGER
-    created_at: number; // INTEGER (Unix timestamp)
-    updated_at: number; // INTEGER
+  id: string;
+  username: string;
+  archetype: ArchetypeType;
+  vibe_tags: string[];
+  avatar_url: string | null;
+  photo_url: string | null;
+  position_x: number;
+  position_y: number;
+  last_active: string;
+  cta_text: string | null;
+  cta_link: string | null;
+  bio: string | null;
+  instagram: string | null;
+  twitter: string | null;
+  youtube: string | null;
+  tiktok: string | null;
+  website: string | null;
+  followers: number;
+  created_at: string;
 }
 
-export interface CreatorAuth {
-    id: string;
-    email: string;
-    provider: string; // 'google'
-    provider_id: string;
-    created_at: number;
+// Form data for creating/updating creator
+export interface CreatorFormData {
+  username: string;
+  archetype: ArchetypeType;
+  vibe_tags?: string[];
+  avatar_url?: string;
+  photo_url?: string;
+  position_x?: number;
+  position_y?: number;
+  cta_text?: string;
+  cta_link?: string;
+  bio?: string;
+  instagram?: string;
+  twitter?: string;
+  youtube?: string;
+  tiktok?: string;
+  website?: string;
 }
 
-export interface Env {
-    DB: any; // D1Database binding
-    R2: any; // R2Bucket binding
+// For displaying creator on map
+export interface CreatorMapData {
+  id: string;
+  username: string;
+  archetype: ArchetypeType;
+  avatar_url: string | null;
+  position_x: number;
+  position_y: number;
+  last_active: string;
 }
